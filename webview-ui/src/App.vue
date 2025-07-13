@@ -103,8 +103,8 @@
 					? 'rgba(47, 52, 55, 0)'
 					: 'rgba(250, 250, 250, 0)'
 			"
-			:toolbarHeight="120"
-			:editablePaddingTop="130"
+			:toolbarHeight="130"
+			:editablePaddingTop="150"
 			:readOnlyPaddingTop="80"
 			:contentMaxWidth="expandContent ? '99999px' : '900px'"
 			:mobileDisplayWidth="0"
@@ -537,6 +537,7 @@ const getSaveContent = (json) => {
 		}
 		_fabulous_notebook.content = json;
 		_fabulous_notebook.updateDate = new Date();
+		_fabulous_notebook.fabulous_notebook = true;
 		saveContent = JSON.stringify(_fabulous_notebook);
 	} else if (contentType.value == "md") {
 		saveContent = editor.value.saveMarkdown();
@@ -578,7 +579,7 @@ body {
 	width: 100%;
 	height: 100%;
 
-    scrollbar-color: rgba(191, 190, 189, 0.1) rgba(191, 190, 189, 0.1);
+	scrollbar-color: rgba(191, 190, 189, 0.1) rgba(191, 190, 189, 0.1);
 
 	::-webkit-scrollbar {
 		width: 10px;
