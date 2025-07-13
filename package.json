@@ -1,0 +1,76 @@
+{
+    "name": "fabnote",
+    "displayName": "FabNote",
+    "description": "",
+    "version": "0.0.1",
+    "icon": "./utils/file-icons/fbn-icon.ico",
+    "publisher": "Creator SN",
+    "engines": {
+        "vscode": "^1.102.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [],
+    "main": "./extension.js",
+    "contributes": {
+        "languages": [
+            {
+                "id": "fabnote",
+                "extensions": [
+                    ".fbn"
+                ],
+                "aliases": [
+                    "FabNote"
+                ]
+            }
+        ],
+        "commands": [
+            {
+                "command": "fabnote.helloFAB",
+                "title": "Hello FAB"
+            },
+            {
+                "command": "extension.previewFbn",
+                "title": "Preview FabNote"
+            }
+        ],
+        "customEditors": [
+            {
+                "viewType": "fbnPreview.customEditor",
+                "displayName": "FAB Editor",
+                "selector": [
+                    {
+                        "filenamePattern": "*.fbn"
+                    },
+                    {
+                        "filenamePattern": "*.md"
+                    }
+                ]
+            }
+        ],
+        "fileIcons": [
+            {
+                "icon": "./utils/file-icons/fbn-icon.svg",
+                "extensions": [
+                    "fbn"
+                ],
+                "format": "svg"
+            }
+        ]
+    },
+    "scripts": {
+        "lint": "eslint .",
+        "pretest": "yarn run lint",
+        "test": "vscode-test"
+    },
+    "devDependencies": {
+        "@types/mocha": "^10.0.10",
+        "@types/node": "20.x",
+        "@types/vscode": "^1.102.0",
+        "@vscode/test-cli": "^0.0.11",
+        "@vscode/test-electron": "^2.5.2",
+        "eslint": "^9.25.1"
+    },
+    "dependencies": {}
+}

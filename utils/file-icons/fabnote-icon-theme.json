@@ -1,0 +1,16 @@
+{
+	"iconDefinitions": {
+		"fbn-file-icon": {
+			"iconPath": "./fbn-icon.svg"
+		}
+	},
+	"fileExtensions": {
+		"fbn": "fbn-file-icon"
+	},
+	"fileNames": {},
+	"folderNames": {},
+	"folderExpanded": {},
+	"folder": "",
+	"rootFolder": "",
+	"default": "file"
+}
