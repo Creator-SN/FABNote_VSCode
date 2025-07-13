@@ -4,7 +4,7 @@
     "description": "",
     "version": "0.0.1",
     "icon": "utils/file-icons/fbn-icon.ico",
-    "publisher": "Creator SN",
+    "publisher": "CreatorSN",
     "repository": {
         "type": "git",
         "url": "https://github.com/Creator-SN/FABNote_VSCode"
