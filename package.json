@@ -2,7 +2,7 @@
     "name": "fabnote",
     "displayName": "FabNote",
     "description": "",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "icon": "utils/file-icons/fbn-icon.ico",
     "publisher": "CreatorSN",
     "repository": {
