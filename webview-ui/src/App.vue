@@ -200,7 +200,7 @@
 				<editor-nav
 					v-show="editor_show_nav"
 					:el="() => editor"
-					:editorExpandContent="editor_show_nav"
+					:editorExpandContent="expandContent"
 					:theme="theme"
 					ref="editor_nav"
 				></editor-nav>
