@@ -4,6 +4,7 @@ test/**
 .gitignore
 .yarnrc
 vsc-extension-quickstart.md
+webview-ui/**
 **/jsconfig.json
 **/*.map
 **/eslint.config.mjs
