@@ -158,6 +158,8 @@ npx @vscode/vsce publish
 npx @vscode/vsce login CreatorSN
 ```
 
+[Azure DevOps](https://dev.azure.com/creatorsn/)
+
 ## 工作原理
 
 - 扩展入口在 [../extension.js](../extension.js)
