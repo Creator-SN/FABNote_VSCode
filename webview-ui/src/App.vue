@@ -91,6 +91,7 @@
 			:editable="!readonly"
 			:theme="theme"
 			:language="language"
+			:extensions="editorExtensions"
 			class="power-editor-wrapper"
 			:placeholder="local('Write something ...')"
 			:editorBackground="
@@ -259,6 +260,7 @@ import { storeToRefs } from "pinia";
 import { useAppConfig } from "./store/appConfig";
 
 import editorNav from "./components/editorNav.vue";
+import pdfNote from "./components/general/editorCustom/extension/pdfNote.js";
 
 const appConfig = useAppConfig();
 appConfig.reviseI18N(i18n);
@@ -270,6 +272,7 @@ const vscode =
 const editor = ref(null);
 const input = ref(null);
 const editor_nav = ref(null);
+const editorExtensions = [pdfNote];
 
 const theme = ref("light");
 const show = ref({

@@ -64,7 +64,7 @@
         ]
     },
     "scripts": {
-        "lint": "eslint .",
+        "lint": "eslint extension.js test utils",
         "pretest": "yarn run lint",
         "test": "vscode-test"
     },

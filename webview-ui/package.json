@@ -9,8 +9,10 @@
         "preview": "vite preview"
     },
     "dependencies": {
-        "@creatorsn/powereditor3": "^0.1.6",
-        "@creatorsn/vfluent3": "^0.3.3",
+        "@creatorsn/powereditor3": "^0.2.10",
+        "@creatorsn/vfluent3": "^0.3.89",
+        "@tiptap/core": "3.23.6",
+        "@tiptap/vue-3": "3.23.6",
         "diff": "^8.0.2",
         "gsap": "^3.13.0",
         "pinia": "^2.1.7",
