@@ -9,7 +9,7 @@
         "preview": "vite preview"
     },
     "dependencies": {
-        "@creatorsn/powereditor3": "^0.2.10",
+        "@creatorsn/powereditor3": "^0.2.12",
         "@creatorsn/vfluent3": "^0.3.89",
         "@tiptap/core": "3.23.6",
         "@tiptap/vue-3": "3.23.6",
