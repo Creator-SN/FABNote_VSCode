@@ -255,7 +255,7 @@
 import * as Diff from "diff";
 import i18n from "./js/i18n.js";
 
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, onBeforeUnmount, computed } from "vue";
 import { storeToRefs } from "pinia";
 import { useAppConfig } from "./store/appConfig";
 
@@ -356,6 +356,16 @@ const syncTheme = (themeKind) => {
 };
 
 const editor_show_nav = ref(true);
+const messageHandler = (event) => {
+	const message = event.data;
+	if (message.type === "loadFbn") {
+		content.value = message.text;
+		languageInit(message.language);
+		refreshContent(content.value);
+	} else if (message.type === "themeChange") {
+		syncTheme(message.themeKind);
+	}
+};
 
 const content = ref("");
 // const content = `{
@@ -387,16 +397,19 @@ const content = ref("");
 
 onMounted(() => {
 	ShortCutInit();
-	window.addEventListener("message", (event) => {
-		const message = event.data;
-		if (message.type === "loadFbn") {
-			content.value = message.text;
-			languageInit(message.language);
-			refreshContent(content.value);
-		} else if (message.type === "themeChange") {
-			syncTheme(message.themeKind);
-		}
-	});
+	bindNativeImageEvents();
+	window.addEventListener("message", messageHandler);
+});
+
+onBeforeUnmount(() => {
+	const editorElement = editor.value?.$el;
+	if (editorElement) {
+		editorElement.removeEventListener("paste", handleImagePaste, true);
+		editorElement.removeEventListener("drop", handleImageDrop, true);
+		editorElement.removeEventListener("dragover", handleImageDragOver, true);
+	}
+	window.removeEventListener("message", messageHandler);
+	window.removeEventListener("keydown", shortCutEvent);
 });
 
 const timer = ref({
@@ -478,6 +491,86 @@ const currentBanner = computed(() => {
 	if (!fabulousNotebook.value.banner) return "";
 	return fabulousNotebook.value.banner;
 });
+
+const bindNativeImageEvents = () => {
+	const editorElement = editor.value?.$el;
+	if (!editorElement) return;
+	editorElement.addEventListener("paste", handleImagePaste, true);
+	editorElement.addEventListener("drop", handleImageDrop, true);
+	editorElement.addEventListener("dragover", handleImageDragOver, true);
+};
+
+const getClipboardImageFiles = (items = []) => {
+	return Array.from(items)
+		.filter((item) => item.kind === "file" && item.type?.startsWith("image/"))
+		.map((item) => item.getAsFile())
+		.filter(Boolean);
+};
+
+const readFilesAsDataUrls = async (files = []) => {
+	return await Promise.all(
+		files.map(
+			(file) =>
+				new Promise((resolve, reject) => {
+					const reader = new FileReader();
+					reader.onload = (e) => resolve(e.target.result);
+					reader.onerror = () =>
+						reject(new Error("Read image file failed"));
+					reader.readAsDataURL(file);
+				})
+		)
+	);
+};
+
+const insertImages = (dataUrls = []) => {
+	if (!dataUrls.length) return;
+	const tiptap = editor.value?.editor?.();
+	if (!tiptap) return;
+	dataUrls.forEach((src) => {
+		tiptap
+			.chain()
+			.focus()
+			.insertContent(`<img src="${src}" theme="${theme.value}"></img>`)
+			.run();
+	});
+};
+
+const handleImagePaste = async (event) => {
+	const imageFiles = getClipboardImageFiles(
+		event?.clipboardData?.items || []
+	);
+	if (imageFiles.length === 0) return;
+	event.preventDefault();
+	try {
+		const dataUrls = await readFilesAsDataUrls(imageFiles);
+		insertImages(dataUrls);
+	} catch (error) {
+		console.error(error);
+	}
+};
+
+const handleImageDragOver = (event) => {
+	const hasImage = Array.from(event?.dataTransfer?.items || []).some(
+		(item) => item.kind === "file" && item.type?.startsWith("image/")
+	);
+	if (hasImage) {
+		event.preventDefault();
+	}
+};
+
+const handleImageDrop = async (event) => {
+	const files = Array.from(event?.dataTransfer?.files || []).filter((file) =>
+		file.type?.startsWith("image/")
+	);
+	if (files.length === 0) return;
+	event.preventDefault();
+	try {
+		const dataUrls = await readFilesAsDataUrls(files);
+		insertImages(dataUrls);
+	} catch (error) {
+		console.error(error);
+	}
+};
 
 const chooseBanner = () => {
 	if (input.value.files.length === 0) return;
