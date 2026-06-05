@@ -112,18 +112,43 @@ yarn preview
 
 ## Package a VSIX
 
-The repository does not currently define a package script for publishing, so use `vsce` directly:
+The repository now includes a helper script that updates the root extension version and then runs `vsce package` for you:
+
+```bash
+npm run package:vsix
+```
+
+By default, this bumps the root `package.json` version by one `patch` step and then runs:
 
 ```bash
 npx @vscode/vsce package
 ```
 
-This generates a file like `fabnote-0.0.3.vsix` in the repository root.
+If you want to package a specific version:
+
+```bash
+npm run package:vsix -- 0.0.7
+```
+
+If you want finer control, you can also call the PowerShell script directly:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\package-extension.ps1 -Bump minor
+powershell -ExecutionPolicy Bypass -File .\scripts\package-extension.ps1 -Version 0.1.0
+```
+
+For a dry run that only updates the version logic without packaging:
+
+```bash
+powershell -ExecutionPolicy Bypass -File .\scripts\package-extension.ps1 -Version 0.0.7 -SkipPackage
+```
+
+This generates a file like `fabnote-0.0.7.vsix` in the repository root.
 
 To install the local package:
 
 ```bash
-code --install-extension fabnote-0.0.3.vsix
+code --install-extension fabnote-0.0.7.vsix
 ```
 
 ## Publish to VS Code Marketplace
@@ -135,6 +160,14 @@ npx @vscode/vsce publish
 ```
 
 Typical release flow:
+
+1. Rebuild the frontend with `cd webview-ui && yarn build`
+2. Run `yarn lint`
+3. Optionally run `yarn test`
+4. Run `npm run package:vsix` or `npm run package:vsix -- 0.0.7`
+5. After confirming the VSIX works, run `npx @vscode/vsce publish`
+
+If you prefer manual packaging, the helper script is equivalent to:
 
 1. Update `version` in `package.json`
 2. Rebuild the frontend with `cd webview-ui && yarn build`
